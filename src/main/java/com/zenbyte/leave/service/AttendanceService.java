@@ -1,0 +1,9 @@
+package com.zenbyte.leave.service;
+import com.zenbyte.leave.dto.AttendanceUpdateRequest; import com.zenbyte.leave.entity.*; import com.zenbyte.leave.exception.ApiException; import com.zenbyte.leave.repository.*; import org.springframework.stereotype.Service; import java.time.LocalDate; import java.util.*;
+@Service public class AttendanceService {
+ private final AttendanceRepository ar; private final EmployeeRepository er; public AttendanceService(AttendanceRepository ar,EmployeeRepository er){this.ar=ar;this.er=er;}
+ public List<Map<String,Object>> forDate(LocalDate date){List<Employee> es=er.findByActiveTrueOrderByNameAsc();Map<Long,Attendance> m=new HashMap<>();ar.findByAttendanceDate(date).forEach(a->m.put(a.getEmployee().getId(),a));List<Map<String,Object>> out=new ArrayList<>();for(Employee e:es){Attendance a=m.get(e.getId());Map<String,Object> x=new LinkedHashMap<>();x.put("employeeId",e.getId());x.put("employeeCode",e.getEmployeeId());x.put("name",e.getName());x.put("status",a==null?AttendanceStatus.PRESENT:a.getStatus());out.add(x);}return out;}
+ public void update(LocalDate date,List<AttendanceUpdateRequest> updates){for(AttendanceUpdateRequest r:updates){Employee e=er.findById(r.employeeId()).orElseThrow(()->new ApiException("Employee not found"));Attendance a=ar.findByEmployeeIdAndAttendanceDate(e.getId(),date).orElseGet(Attendance::new);a.setEmployee(e);a.setAttendanceDate(date);a.setStatus(r.status());ar.save(a);}}
+ public void markAllPresent(LocalDate date){for(Employee e:er.findByActiveTrueOrderByNameAsc()){Attendance a=ar.findByEmployeeIdAndAttendanceDate(e.getId(),date).orElseGet(Attendance::new);a.setEmployee(e);a.setAttendanceDate(date);a.setStatus(AttendanceStatus.PRESENT);ar.save(a);}}
+ public long absentCount(LocalDate date){return ar.findByAttendanceDate(date).stream().filter(a->a.getStatus()==AttendanceStatus.ABSENT).count();}
+}

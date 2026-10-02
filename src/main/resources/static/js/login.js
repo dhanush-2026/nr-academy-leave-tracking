@@ -1,0 +1,4 @@
+const $=s=>document.querySelector(s);const api=async(url,opt={})=>{const r=await fetch(url,{headers:{'Content-Type':'application/json',...(opt.headers||{})},...opt});let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.error||'Request failed');return d};
+(async()=>{try{const me=await api('/api/auth/me');location.href=me.role==='ADMIN'?'/admin.html':'/user.html'}catch{}})();
+$('#togglePassword').onclick=()=>{$('#password').type=$('#password').type==='password'?'text':'password'};
+$('#loginForm').onsubmit=async e=>{e.preventDefault();$('#loginError').textContent='';try{const d=await api('/api/auth/login',{method:'POST',body:JSON.stringify({username:$('#username').value.trim(),password:$('#password').value})});location.href=d.role==='ADMIN'?'/admin.html':'/user.html'}catch(err){$('#loginError').textContent=err.message}};

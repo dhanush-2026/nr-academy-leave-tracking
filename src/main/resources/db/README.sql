@@ -1,0 +1,2 @@
+-- Optional reference schema. The application uses JPA/Hibernate to create/update tables.
+-- Tables: employees, users, attendance, leaves, holidays.
