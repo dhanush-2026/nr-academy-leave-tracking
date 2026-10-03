@@ -98,4 +98,23 @@ public class UserService {
 
         repo.deleteById(id);
     }
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        // 1. Username vachi user-a database la irunthu edukkurom
+        AppUser u = repo.findByUsername(username)
+                .orElseThrow(() -> new ApiException("User not found"));
+
+        // 2. Old password correct ah irukka nu check pandrom
+        if (!enc.matches(oldPassword, u.getPassword())) {
+            throw new ApiException("Old password incorrect");
+        }
+
+        // 3. New password empty ah irukka kudadhu
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new ApiException("New password cannot be empty");
+        }
+
+        // 4. Pudhu password-a encode panni save pandrom
+        u.setPassword(enc.encode(newPassword));
+        repo.save(u);
+    }
 }
