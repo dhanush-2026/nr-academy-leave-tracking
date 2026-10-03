@@ -81,9 +81,12 @@ async function init() {
         const me = await api('/api/auth/me');
 
         if (me.role !== 'ADMIN') {
-            location.href = '/user.html';
-            return;
-        }
+    document.body.innerHTML = `
+        <h2>Access Denied</h2>
+        <p>Please log out and sign in with the correct account.</p>
+    `;
+    return;
+}
 
         $('#topUsername').textContent = me.username;
 

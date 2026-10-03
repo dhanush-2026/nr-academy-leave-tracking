@@ -117,10 +117,13 @@ async function init() {
     try {
         me = await api("/api/auth/me");
 
-        if (me.role !== "USER") {
-            location.href = "/admin.html";
-            return;
-        }
+     if (me.role !== "USER") {
+    document.body.innerHTML = `
+        <h2>Access Denied</h2>
+        <p>Please log out and sign in with the correct account.</p>
+    `;
+    return;
+}
 
         const name = me.employee?.name || me.username;
 
