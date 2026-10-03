@@ -345,3 +345,17 @@ function esc(v) {
         '"': '&quot;'
     }[c]));
 }
+$('#changePasswordForm').onsubmit = async (e) => {
+    e.preventDefault(); 
+    const data = Object.fromEntries(new FormData(e.target));
+    try {
+        await api('/api/user/change-password', {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+        toast('Password updated successfully', 'success');
+        e.target.reset(); 
+    } catch (err) {
+        toast(err.message, 'error'); 
+    }
+};
