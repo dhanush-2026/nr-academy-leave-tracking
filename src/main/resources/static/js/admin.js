@@ -551,7 +551,7 @@ async function loadRequests() {
                 <td>${fmt(l.toDate)}</td>
                 <td>${l.leaveDays}</td>
                 <td>${esc(l.reason)}</td>
-                <td>${esc(l.remarks) || '-'}</td>
+                <td>${esc(l.description || '-')}</td>
                 <td>${new Date(l.appliedDate).toLocaleDateString('en-IN')}</td>
                 <td><span class="status ${l.status}">${l.status}</span></td>
                 <td>
