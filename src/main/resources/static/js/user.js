@@ -117,7 +117,7 @@ async function init() {
     try {
         me = await api("/api/auth/me");
 
-     if (me.role !== "USER") {
+if (me.role !== "EMPLOYEE") {
     document.body.innerHTML = `
         <h2>Access Denied</h2>
         <p>Please log out and sign in with the correct account.</p>
