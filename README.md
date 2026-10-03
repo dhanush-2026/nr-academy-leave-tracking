@@ -140,7 +140,7 @@ The demo accounts are created automatically if they do not already exist. Change
 - BCrypt password hashing.
 - Session-based Spring Security authentication.
 - Admin APIs require `ROLE_ADMIN`.
-- Employee APIs require `ROLE_EMPLOYEE` (Admin is also allowed by the security rule for shared read routes).
+- Employee APIs require `ROLE_USER` (Admin is also allowed by the security rule for shared read routes).
 - Employee leave endpoints always use the authenticated user's linked employee ID; a normal employee cannot request another employee's leave records through the API.
 - Logout invalidates the session.
 

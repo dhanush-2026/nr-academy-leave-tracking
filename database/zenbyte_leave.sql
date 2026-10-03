@@ -47,4 +47,4 @@ CREATE TABLE IF NOT EXISTS holidays (
 
 -- Demo users are seeded automatically by Spring Boot on first startup:
 -- ADMIN: admin / Admin@123
--- EMPLOYEE : E001 / User@123
+-- USER : E001 / User@123

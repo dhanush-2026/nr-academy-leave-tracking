@@ -1,14 +1,11 @@
 package com.zenbyte.leave.repository;
 
-import com.zenbyte.leave.entity.AppUser;
-import com.zenbyte.leave.entity.Employee;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.zenbyte.leave.entity.AppUser;
 
 public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
@@ -16,12 +13,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     boolean existsByUsername(String username);
 
-    Optional<AppUser> findByEmployee(Employee employee);
-
     List<AppUser> findAllByOrderByUsernameAsc();
-
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE users SET role = 'EMPLOYEE' WHERE role = 'USER'", nativeQuery = true)
-    int migrateLegacyUserRole();
 }
