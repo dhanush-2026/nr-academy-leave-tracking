@@ -424,9 +424,13 @@ async function calculateDays() {
     const t = $("#leaveApplyTo").value;
 
     if (!f || !t) {
-        $("#calculatedDays").textContent =
-            "0 working days";
+        $("#calculatedDays").textContent = "0 working days";
+        return;
+    }
 
+    if (f > t) {
+        $("#calculatedDays").textContent =
+            "From Date cannot be after To Date";
         return;
     }
 
@@ -440,7 +444,9 @@ async function calculateDays() {
 
     } catch (e) {
         $("#calculatedDays").textContent =
-            e.message;
+            "Unable to calculate leave days";
+
+        toast(e.message, "error");
     }
 }
 
