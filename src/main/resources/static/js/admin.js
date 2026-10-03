@@ -783,7 +783,7 @@ function openUser(u = null) {
                     </label>
                     <label>Role
                         <select name="role">
-                            <option ${u?.role === 'USER' ? 'selected' : ''}>USER</option>
+                            <option ${u?.role === 'EMPLOYEE' ? 'selected' : ''}>EMPLOYEE</option>
                             <option ${!u || u.role === 'ADMIN' ? 'selected' : ''}>ADMIN</option>
                         </select>
                     </label>
