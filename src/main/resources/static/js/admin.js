@@ -1001,6 +1001,5 @@ async function logout() {
 }
 
 $('#logoutBtn').onclick = logout;
-$('#settingsLogout').onclick = logout;
 
 init();

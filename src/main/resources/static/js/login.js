@@ -13,7 +13,7 @@ const api = async (url, opt = {}) => {
 
     try {
         d = await r.json();
-    } catch { }
+    } catch {}
 
     if (!r.ok) {
         throw new Error(d.error || 'Request failed');
@@ -25,20 +25,23 @@ const api = async (url, opt = {}) => {
 (async () => {
     try {
         const me = await api('/api/auth/me');
+
         location.href = me.role === 'ADMIN'
             ? '/admin.html'
             : '/user.html';
-    } catch { }
+    } catch {}
 })();
 
 $('#togglePassword').onclick = () => {
-    $('#password').type = $('#password').type === 'password'
-        ? 'text'
-        : 'password';
+    $('#password').type =
+        $('#password').type === 'password'
+            ? 'text'
+            : 'password';
 };
 
 $('#loginForm').onsubmit = async e => {
     e.preventDefault();
+
     $('#loginError').textContent = '';
 
     try {
@@ -53,6 +56,7 @@ $('#loginForm').onsubmit = async e => {
         location.href = d.role === 'ADMIN'
             ? '/admin.html'
             : '/user.html';
+
     } catch (err) {
         $('#loginError').textContent = err.message;
     }

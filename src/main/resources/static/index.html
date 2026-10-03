@@ -1,1 +1,108 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NR ACADEMY | Login</title><link rel="stylesheet" href="/css/app.css"></head><body class="login-body"><div class="login-shell"><div class="login-brand"><div class="brand-mark">◆</div><div><strong>NR ACADEMY</strong><span>Zenbyte Leave Tracking System</span></div></div><div class="login-card"><div class="login-icon">🔐</div><h1>Welcome back</h1><p>Sign in to manage your office leave and attendance.</p><form id="loginForm"><label>Username<input id="username" required autocomplete="username" placeholder="Enter username"></label><label>Password<div class="password-wrap"><input id="password" type="password" required autocomplete="current-password" placeholder="Enter password"><button type="button" class="icon-btn" id="togglePassword">👁</button></div></label><button class="btn primary full" type="submit">Sign In <span>→</span></button><div id="loginError" class="form-error"></div></form><div class="demo-box"><b>Demo accounts</b><span>Admin: <code>admin</code> / <code>Admin@123</code></span><span>User: <code>E001</code> / <code>User@123</code></span></div></div><footer>© 2026 NR ACADEMY · Zenbyte Office Leave Tracking System</footer></div><script src="/js/login.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>NR ACADEMY | Login</title>
+
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body class="login-body">
+
+    <div class="login-shell">
+
+        <!-- Brand -->
+        <div class="login-brand">
+            <div class="brand-mark">◆</div>
+
+            <div>
+                <strong>NR ACADEMY</strong>
+                <span>NR ACADEMY Leave Tracking System</span>
+            </div>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-card">
+
+            <div class="login-icon">🔐</div>
+
+            <h1>Welcome back</h1>
+
+            <p>
+                Sign in to manage your office leave and attendance.
+            </p>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+
+                <!-- Username -->
+                <label>
+                    Username
+
+                    <input
+                        id="username"
+                        required
+                        autocomplete="username"
+                        placeholder="Enter username"
+                    >
+                </label>
+
+                <!-- Password -->
+                <label>
+                    Password
+
+                    <div class="password-wrap">
+
+                        <input
+                            id="password"
+                            type="password"
+                            required
+                            autocomplete="current-password"
+                            placeholder="Enter password"
+                        >
+
+                        <button
+                            type="button"
+                            class="icon-btn"
+                            id="togglePassword"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+                </label>
+
+                <!-- Sign In Button -->
+                <button
+                    class="btn primary full"
+                    type="submit"
+                >
+                    Sign In
+                    <span>→</span>
+                </button>
+
+                <!-- Login Error -->
+                <div
+                    id="loginError"
+                    class="form-error"
+                ></div>
+
+            </form>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            © 2026 NR ACADEMY · NR ACADEMY Office Leave Tracking System
+        </footer>
+
+    </div>
+
+    <script src="/js/login.js"></script>
+
+</body>
+
+</html>
