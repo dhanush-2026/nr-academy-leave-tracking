@@ -35,6 +35,7 @@ public class SecurityConfig {
                     "/user.html",
                     "/css/**",
                     "/js/**",
+                    "/images/**",
                     "/api/auth/**",
                     "/error"
                 ).permitAll()
