@@ -1,4 +1,3 @@
-
 package com.zenbyte.leave.controller;
 
 import java.util.LinkedHashMap;
@@ -7,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -45,17 +45,30 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public Map<String, Object> login(
+    public ResponseEntity<?> login(
             @Valid @RequestBody LoginRequest r,
             HttpServletRequest req,
             HttpServletResponse res) {
 
-        Authentication a = am.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        r.username(),
-                        r.password()
-                )
-        );
+        Authentication a;
+
+        try {
+            a = am.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            r.username(),
+                            r.password()
+                    )
+            );
+
+        } catch (BadCredentialsException e) {
+
+            Map<String, Object> out = new LinkedHashMap<>();
+            out.put("error", "Invalid Username/Password");
+
+            return ResponseEntity
+                    .status(401)
+                    .body(out);
+        }
 
         SecurityContext c =
                 SecurityContextHolder.createEmptyContext();
@@ -68,8 +81,10 @@ public class AuthController {
         AppUser u = auth.current();
 
         Map<String, Object> out = new LinkedHashMap<>();
+
         out.put("role", u.getRole());
         out.put("username", u.getUsername());
+
         out.put(
                 "employeeId",
                 u.getEmployee() == null
@@ -77,7 +92,7 @@ public class AuthController {
                         : u.getEmployee().getEmployeeId()
         );
 
-        return out;
+        return ResponseEntity.ok(out);
     }
 
     @GetMapping("/me")
@@ -91,12 +106,15 @@ public class AuthController {
             Map<String, Object> response = new LinkedHashMap<>();
             response.put("authenticated", false);
 
-            return ResponseEntity.status(401).body(response);
+            return ResponseEntity
+                    .status(401)
+                    .body(response);
         }
 
         AppUser u = auth.current();
 
         Map<String, Object> out = new LinkedHashMap<>();
+
         out.put("authenticated", true);
         out.put("role", u.getRole());
         out.put("username", u.getUsername());
