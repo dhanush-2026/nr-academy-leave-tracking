@@ -117,13 +117,13 @@ async function init() {
     try {
         me = await api("/api/auth/me");
 
-if (me.role !== "EMPLOYEE") {
-    document.body.innerHTML = `
-        <h2>Access Denied</h2>
-        <p>Please log out and sign in with the correct account.</p>
-    `;
-    return;
-}
+        if (me.role !== "EMPLOYEE") {
+            document.body.innerHTML = `
+                <h2>Access Denied</h2>
+                <p>Please log out and sign in with the correct account.</p>
+            `;
+            return;
+        }
 
         const name = me.employee?.name || me.username;
 
@@ -424,7 +424,8 @@ async function calculateDays() {
     const t = $("#leaveApplyTo").value;
 
     if (!f || !t) {
-        $("#calculatedDays").textContent = "0 working days";
+        $("#calculatedDays").textContent =
+            "0 working days";
         return;
     }
 
@@ -470,24 +471,73 @@ $("#clearLeave").onclick = () => {
 };
 
 /* =========================
+   Other Leave Remark Validation
+========================= */
+
+$("#leaveReason").onchange = () => {
+
+    const reason =
+        $("#leaveReason").value.trim().toLowerCase();
+
+    const description =
+        $("#leaveDescription");
+
+    if (reason === "other") {
+        description.required = true;
+        description.placeholder =
+            "Please enter your remark...";
+    } else {
+        description.required = false;
+        description.placeholder =
+            "Optional details...";
+    }
+};
+
+/* =========================
    Submit Leave
 ========================= */
 
 $("#leaveForm").onsubmit = async e => {
     e.preventDefault();
 
+    const reason =
+        $("#leaveReason").value.trim();
+
+    const description =
+        $("#leaveDescription").value.trim();
+
+    /*
+     * Other leave-ku remark compulsory
+     */
+    if (
+        reason.toLowerCase() === "other" &&
+        !description
+    ) {
+        toast(
+            "Please enter a remark for Other leave",
+            "error"
+        );
+
+        $("#leaveDescription").focus();
+
+        return;
+    }
+
     const data = {
         fromDate: $("#leaveApplyFrom").value,
         toDate: $("#leaveApplyTo").value,
-        reason: $("#leaveReason").value,
-        description: $("#leaveDescription").value
+        reason: reason,
+        description: description
     };
 
     try {
-        const r = await api("/api/user/leaves", {
-            method: "POST",
-            body: JSON.stringify(data)
-        });
+        const r = await api(
+            "/api/user/leaves",
+            {
+                method: "POST",
+                body: JSON.stringify(data)
+            }
+        );
 
         toast(
             `Leave request submitted: ${r.leaveDays} applicable days`
@@ -501,12 +551,20 @@ $("#leaveForm").onsubmit = async e => {
         $("#calculatedDays").textContent =
             "0 working days";
 
+        $("#leaveDescription").required = false;
+
+        $("#leaveDescription").placeholder =
+            "Optional details...";
+
         await loadDashboard();
 
         showPage("myLeaves");
 
     } catch (err) {
-        toast(err.message, "error");
+        toast(
+            err.message,
+            "error"
+        );
     }
 };
 
@@ -538,9 +596,12 @@ $("#userSearch").oninput = e => {
 
 async function logout() {
     try {
-        await fetch("/api/auth/logout", {
-            method: "POST"
-        });
+        await fetch(
+            "/api/auth/logout",
+            {
+                method: "POST"
+            }
+        );
     } finally {
         location.href = "/";
     }
@@ -613,7 +674,10 @@ $("#changePasswordForm").onsubmit =
             e.target.reset();
 
         } catch (err) {
-            toast(err.message, "error");
+            toast(
+                err.message,
+                "error"
+            );
         }
     };
 
