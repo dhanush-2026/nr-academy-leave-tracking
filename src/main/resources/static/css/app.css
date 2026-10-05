@@ -104,6 +104,18 @@ button {
     transform: rotate(45deg);
 }
 
+.brand-logo {
+
+    width: 38px;
+
+    height: 38px;
+
+    object-fit: contain;
+
+    border-radius: 10px;
+
+}
+
 .brand-mark + div {
     display: flex;
     flex-direction: column;
