@@ -1,4 +1,3 @@
-
 package com.zenbyte.leave.service;
 
 import java.time.DayOfWeek;
@@ -32,19 +31,22 @@ public class DashboardService {
     private final LeaveRequestRepository lr;
     private final HolidayRepository hr;
     private final LeaveService ls;
+    private final LeaveCalculationService calc;
 
     public DashboardService(
             EmployeeRepository er,
             AttendanceRepository ar,
             LeaveRequestRepository lr,
             HolidayRepository hr,
-            LeaveService ls) {
+            LeaveService ls,
+            LeaveCalculationService calc) {
 
         this.er = er;
         this.ar = ar;
         this.lr = lr;
         this.hr = hr;
         this.ls = ls;
+        this.calc = calc;
     }
 
     public Map<String, Object> admin() {
@@ -253,9 +255,12 @@ public class DashboardService {
                 ls.applicableLeaveDaysForEmployee(
                         e.getId(), first, last));
 
+        // Monthly Attendance summary
+        result.put("monthlyAttendance", monthlyAttendance(e));
+
         result.put("recentLeaves", all.stream()
                 .limit(8)
-                .map(l -> Map.of(
+                .map(l -> Map.<String, Object>of(
                         "id", l.getId(),
                         "fromDate", l.getFromDate(),
                         "toDate", l.getToDate(),
@@ -285,4 +290,46 @@ public class DashboardService {
 
         return result;
     }
+
+    private Map<String, Object> monthlyAttendance(Employee e) {
+
+    LocalDate today = LocalDate.now();
+    LocalDate first = today.withDayOfMonth(1);
+
+    Set<LocalDate> workingDates =
+            calc.workingDates(first, today);
+
+    List<Attendance> attendanceRows =
+            ar.findByEmployeeIdAndAttendanceDateBetween(
+                    e.getId(), first, today);
+
+    Set<LocalDate> absentDates = new HashSet<>();
+
+    attendanceRows.stream()
+            .filter(a -> a.getStatus() == AttendanceStatus.ABSENT)
+            .map(Attendance::getAttendanceDate)
+            .filter(workingDates::contains)
+            .forEach(absentDates::add);
+
+    int workingDays = workingDates.size();
+    int absentDays = absentDates.size();
+    int presentDays = workingDays - absentDays;
+
+    long holidays = hr
+            .findByHolidayDateBetweenOrderByHolidayDateAsc(
+                    first, today)
+            .stream()
+            .map(h -> h.getHolidayDate())
+            .filter(d -> d.getDayOfWeek() != DayOfWeek.SUNDAY)
+            .count();
+
+    Map<String, Object> result = new LinkedHashMap<>();
+
+    result.put("workingDays", workingDays);
+    result.put("presentDays", presentDays);
+    result.put("absentDays", absentDays);
+    result.put("holidayDays", holidays);
+
+    return result;
+}
 }

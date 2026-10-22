@@ -1,3 +1,4 @@
+
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 
@@ -166,18 +167,40 @@ async function loadDashboard() {
     try {
         const d = await api("/api/user/dashboard");
 
+        // Leave Summary
         $("#uApproved").textContent = d.approvedDays;
         $("#uPending").textContent = d.pendingRequests;
         $("#uRejected").textContent = d.rejectedRequests;
-        $("#uMonth").textContent = d.currentMonthLeaveDays;
 
+        // Monthly Attendance
+        const attendance = d.monthlyAttendance;
+
+        if (attendance) {
+            $("#uMonthlyAttendance").textContent =
+                `${attendance.presentDays}/${attendance.workingDays}`;
+
+            $("#uWorkingDays").textContent =
+                `Working days: ${attendance.workingDays}`;
+
+            $("#uPresentDays").textContent =
+                `${attendance.presentDays} days`;
+
+            $("#uAbsentDays").textContent =
+                `${attendance.absentDays} days`;
+
+            $("#uHolidays").textContent =
+                `${attendance.holidayDays} days`;
+        }
+
+        // Leave Summary Ring
         $("#ringApproved").textContent = d.approvedDays;
         $("#ringA").textContent = d.approvedDays;
         $("#ringP").textContent = d.pendingRequests;
         $("#ringR").textContent = d.rejectedRequests;
 
+        // Recent Leave History
         $("#recentUserLeaves").innerHTML =
-            d.recentLeaves
+            (d.recentLeaves || [])
                 .map(
                     l => `
                     <tr>
@@ -196,6 +219,7 @@ async function loadDashboard() {
                 .join("") ||
             emptyRow(5, "No leave history");
 
+        // Leave Trend Chart
         renderBars("#userLeaveChart", d.leaveTrend || []);
 
     } catch (e) {
@@ -506,9 +530,6 @@ $("#leaveForm").onsubmit = async e => {
     const description =
         $("#leaveDescription").value.trim();
 
-    /*
-     * Other leave-ku remark compulsory
-     */
     if (
         reason.toLowerCase() === "other" &&
         !description

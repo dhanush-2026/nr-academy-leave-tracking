@@ -1,8 +1,9 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NR ACADEMY | Employee</title>
     <link rel="stylesheet" href="/css/app.css">
 </head>
@@ -12,9 +13,11 @@
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
             <div class="brand">
-                <img src="/images/nr-academy-logo.png-removebg-preview.png"
-                     class="brand-logo" 
-                     alt="NR ACADEMY">
+                <img
+                    src="/images/nr-academy-logo.png-removebg-preview.png"
+                    class="brand-logo"
+                    alt="NR ACADEMY"
+                >
                 <div>
                     <strong>NR ACADEMY</strong>
                     <span>NR ACADEMY Leave Tracking</span>
@@ -34,7 +37,6 @@
                 <button class="nav-item" data-page="holidays">
                     ▣ <span>Holidays</span>
                 </button>
-               
             </nav>
 
             <button class="nav-item logout" id="logoutBtn">
@@ -71,6 +73,8 @@
             </header>
 
             <div class="content">
+
+                <!-- DASHBOARD -->
                 <section class="page" id="page-dashboard">
                     <div class="page-head">
                         <div>
@@ -111,11 +115,29 @@
                             <em>Not counted as leave</em>
                         </div>
 
+                        <!-- MONTHLY ATTENDANCE CARD -->
                         <div class="metric purple">
                             <span class="metric-icon">◫</span>
-                            <small>Current Month Leave Days</small>
-                            <strong id="uMonth">0</strong>
-                            <em>Approved + absent</em>
+                            <small>Monthly Attendance</small>
+                            <strong id="uMonthlyAttendance">0/0</strong>
+                            <em id="uWorkingDays">Working days: 0</em>
+
+                            <div class="monthly-attendance-details">
+                                <div>
+                                    <span>Present</span>
+                                    <strong id="uPresentDays">0 days</strong>
+                                </div>
+
+                                <div>
+                                    <span>Absent / Leave</span>
+                                    <strong id="uAbsentDays">0 days</strong>
+                                </div>
+
+                                <div>
+                                    <span>Holidays</span>
+                                    <strong id="uHolidays">0 days</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -206,6 +228,7 @@
                     </div>
                 </section>
 
+                <!-- APPLY LEAVE -->
                 <section class="page hidden" id="page-apply">
                     <div class="page-head">
                         <div>
@@ -266,12 +289,14 @@
                             </div>
 
                             <div class="form-note">
-                                Sunday and government holidays are excluded. Saturday is included unless it is a holiday.
+                                Sunday and government holidays are excluded.
+                                Saturday is included unless it is a holiday.
                             </div>
                         </form>
                     </div>
                 </section>
 
+                <!-- MY LEAVES -->
                 <section class="page hidden" id="page-myLeaves">
                     <div class="page-head">
                         <div>
@@ -315,6 +340,7 @@
                     </div>
                 </section>
 
+                <!-- HOLIDAYS -->
                 <section class="page hidden" id="page-holidays">
                     <div class="page-head">
                         <div>
@@ -338,6 +364,7 @@
                     </div>
                 </section>
 
+                <!-- PROFILE -->
                 <section class="page hidden" id="page-profile">
                     <div class="page-head">
                         <div>
@@ -345,25 +372,34 @@
                             <p>Your employee information.</p>
                         </div>
                     </div>
+
                     <div class="panel" style="margin-top: 20px;">
                         <h2>Change Password</h2>
+
                         <form id="changePasswordForm">
                             <div class="form-grid">
-                                <label>Old Password
+                                <label>
+                                    Old Password
                                     <input type="password" name="oldPassword" required>
                                 </label>
-                                <label>New Password
+
+                                <label>
+                                    New Password
                                     <input type="password" name="newPassword" required>
                                 </label>
+                            </div>
+
+                            <div style="margin-top: 15px;">
+                                <button type="submit" class="btn primary">
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
                     </div>
-            <div style="margin-top: 15px;">
-                <button type="submit" class="btn primary">Update Password</button>
-            </div>
-        </form>
-    </div>
 
                     <div class="profile-card" id="profileCard"></div>
                 </section>
+
             </div>
         </main>
     </div>
