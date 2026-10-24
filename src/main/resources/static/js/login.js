@@ -1,7 +1,11 @@
 const $ = s => document.querySelector(s);
 
+const API_BASE_URL =
+    'https://nr-academy-leave-tracking.onrender.com';
+
 const api = async (url, opt = {}) => {
-    const r = await fetch(url, {
+     const r = await fetch(`${API_BASE_URL}${url}`, {
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             ...(opt.headers || {})
