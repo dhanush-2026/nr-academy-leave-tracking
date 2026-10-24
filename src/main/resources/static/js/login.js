@@ -89,6 +89,7 @@ if (loginForm) {
 
         try {
             // Send login request
+            console.log('Login button clicked - sending login request');
             const data = await api('/api/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({
